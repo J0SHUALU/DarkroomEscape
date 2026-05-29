@@ -27,12 +27,15 @@ public class PuzzleManager : MonoBehaviour
 
     [Header("Sequence Reset - drag references here")]
     public Light redLightRef;
-    public GameObject candleHintRef;       // the Point on your puzzle 1 candle
-    public GameObject puzzle2RevealsRef;   // the parent containing book + switch hints
+    public GameObject candleHintRef;
+    public GameObject puzzle2RevealsRef;
+
     public int sequenceProgress = 0;
+    public int finalCandleProgress = 0;
 
     private HashSet<string> solvedIds = new HashSet<string>();
     private int switchesFlipped = 0;
+    private int finalCandlesLit = 0;
 
     void Awake()
     {
@@ -66,47 +69,59 @@ public class PuzzleManager : MonoBehaviour
 
     public bool IsSolved(string id) => solvedIds.Contains(id);
 
-    // For ordered switch sequence
+    // Puzzle 3 — switches in correct order
     public bool TryFlipSwitch(int order)
     {
         if (!IsSolved("film_collected")) return false;
-
         sequenceProgress++;
-        Debug.Log($"Attempted switch {order}, expected {sequenceProgress}");
-
+        Debug.Log($"Switch order attempt: {order}, expected: {sequenceProgress}");
         if (order != sequenceProgress)
         {
-            // WRONG ORDER - reset everything
-            Debug.Log("WRONG ORDER - sequence reset, room going dark");
+            Debug.Log("WRONG ORDER - sequence reset");
             ResetSequence();
             return false;
         }
-
         switchesFlipped++;
         Debug.Log($"Switches: {switchesFlipped}/3");
         if (switchesFlipped >= 3) CompletePuzzle("switches_done");
         return true;
     }
 
+    // Puzzle 5 — final candles in correct order (NO RESET, just ignored if wrong)
+    public bool TryFinalCandle(int order)
+    {
+        if (!IsSolved("white_on")) return false;
+        finalCandleProgress++;
+        Debug.Log($"Final candle attempt: {order}, expected: {finalCandleProgress}");
+        if (order != finalCandleProgress)
+        {
+            Debug.Log("WRONG ORDER - final candle reset");
+            finalCandleProgress = 0;
+            finalCandlesLit = 0;
+            // reset used flag on all FinalCandle types
+            Interactable[] all = Object.FindObjectsByType<Interactable>();
+            foreach (var i in all)
+                if (i.type == Interactable.Type.FinalCandle) i.ResetUsed();
+            return false;
+        }
+        finalCandlesLit++;
+        Debug.Log($"Final candles: {finalCandlesLit}/3");
+        if (finalCandlesLit >= 3) CompletePuzzle("final_done");
+        return true;
+    }
+
     public void ResetSequence()
     {
-        // Turn off red light
         if (redLightRef != null) redLightRef.enabled = false;
-
-        // Re-enable candle's own hint glow
         if (candleHintRef != null) candleHintRef.SetActive(true);
-
-        // Re-hide book + switch hints (the puzzle 2 reveal container)
         if (puzzle2RevealsRef != null) puzzle2RevealsRef.SetActive(false);
 
-        // Reset counters and solved IDs
         solvedIds.Remove("red_on");
         solvedIds.Remove("film_collected");
         completedPuzzles = solvedIds.Count;
         switchesFlipped = 0;
         sequenceProgress = 0;
 
-        // Reset all Interactables' used flags so they can be clicked again
         Interactable[] all = Object.FindObjectsByType<Interactable>();
         foreach (var i in all)
         {
@@ -117,7 +132,6 @@ public class PuzzleManager : MonoBehaviour
                 i.ResetUsed();
             }
         }
-
         UpdateProgressUI();
     }
 

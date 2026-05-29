@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public enum Type { RedChain, Tray, Switch, WhiteChain, Dial, Door }
+    public enum Type { RedChain, Tray, Switch, WhiteChain, Dial, Door, FinalCandle }
 
     [Header("Config")]
     public Type type;
@@ -15,8 +15,8 @@ public class Interactable : MonoBehaviour
     public Light lightToToggle;
     public AudioClip sound;
 
-    [Header("Switch settings (only for Type.Switch)")]
-    public int switchOrder = 1; // 1, 2, or 3 — order this switch must be flipped
+    [Header("Switch settings (only for Type.Switch and Type.FinalCandle)")]
+    public int switchOrder = 1; // 1, 2, or 3 — order this must be clicked
 
     [Header("Dial settings")]
     public int correctDigit;
@@ -56,8 +56,8 @@ public class Interactable : MonoBehaviour
             case Type.Switch:
                 if (used) return;
                 if (!PuzzleManager.Instance.IsSolved("film_collected")) return;
-                bool correct = PuzzleManager.Instance.TryFlipSwitch(switchOrder);
-                if (correct)
+                bool correctSwitch = PuzzleManager.Instance.TryFlipSwitch(switchOrder);
+                if (correctSwitch)
                 {
                     used = true;
                     transform.Rotate(0, 0, 30);
@@ -87,6 +87,19 @@ public class Interactable : MonoBehaviour
                 if (objectToReveal != null) objectToReveal.SetActive(true);
                 Play();
                 CheckCombination();
+                break;
+
+            case Type.FinalCandle:
+                if (used) return;
+                if (!PuzzleManager.Instance.IsSolved("white_on")) return;
+                bool correctFinal = PuzzleManager.Instance.TryFinalCandle(switchOrder);
+                if (correctFinal)
+                {
+                    used = true;
+                    if (objectToHide != null) objectToHide.SetActive(false);
+                    if (objectToReveal != null) objectToReveal.SetActive(true);
+                    Play();
+                }
                 break;
 
             case Type.Door:
