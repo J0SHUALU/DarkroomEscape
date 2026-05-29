@@ -100,7 +100,7 @@ public class Interactable : MonoBehaviour
 
     void CheckCombination()
     {
-        Interactable[] all = Object.FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+        Interactable[] all = Object.FindObjectsByType<Interactable>();
         foreach (var i in all)
             if (i.type == Type.Dial && i.currentDigit != i.correctDigit) return;
         PuzzleManager.Instance.CompletePuzzle("combo_set");

@@ -107,7 +107,7 @@ public class PuzzleManager : MonoBehaviour
         sequenceProgress = 0;
 
         // Reset all Interactables' used flags so they can be clicked again
-        Interactable[] all = Object.FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+        Interactable[] all = Object.FindObjectsByType<Interactable>();
         foreach (var i in all)
         {
             if (i.type == Interactable.Type.RedChain ||
