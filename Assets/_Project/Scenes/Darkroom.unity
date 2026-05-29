@@ -143,6 +143,7 @@ MonoBehaviour:
   objectToHide: {fileID: 1864727147}
   lightToToggle: {fileID: 0}
   sound: {fileID: 0}
+  switchOrder: 2
   correctDigit: 0
   currentDigit: 0
   digitDisplay: {fileID: 0}
@@ -735,6 +736,7 @@ MonoBehaviour:
   objectToHide: {fileID: 1612513503}
   lightToToggle: {fileID: 0}
   sound: {fileID: 0}
+  switchOrder: 1
   correctDigit: 0
   currentDigit: 0
   digitDisplay: {fileID: 0}
@@ -767,6 +769,7 @@ MonoBehaviour:
   objectToHide: {fileID: 1087579089}
   lightToToggle: {fileID: 796668230}
   sound: {fileID: 0}
+  switchOrder: 1
   correctDigit: 0
   currentDigit: 0
   digitDisplay: {fileID: 0}
@@ -963,6 +966,7 @@ MonoBehaviour:
   objectToHide: {fileID: 652905649}
   lightToToggle: {fileID: 0}
   sound: {fileID: 0}
+  switchOrder: 3
   correctDigit: 0
   currentDigit: 0
   digitDisplay: {fileID: 0}
@@ -1111,7 +1115,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &734740152
 Transform:
   m_ObjectHideFlags: 0
@@ -1425,7 +1429,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796668229}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 13
   m_Type: 2
   m_Color: {r: 0.8207547, g: 0, b: 0, a: 1}
@@ -1776,6 +1780,10 @@ MonoBehaviour:
   loseScreen: {fileID: 0}
   door: {fileID: 0}
   timeLimit: 300
+  redLightRef: {fileID: 796668230}
+  candleHintRef: {fileID: 1087579089}
+  puzzle2RevealsRef: {fileID: 734740151}
+  sequenceProgress: 0
 --- !u!4 &1120594933
 Transform:
   m_ObjectHideFlags: 0
@@ -2434,6 +2442,7 @@ MonoBehaviour:
   objectToHide: {fileID: 2006423897}
   lightToToggle: {fileID: 0}
   sound: {fileID: 0}
+  switchOrder: 1
   correctDigit: 0
   currentDigit: 0
   digitDisplay: {fileID: 0}

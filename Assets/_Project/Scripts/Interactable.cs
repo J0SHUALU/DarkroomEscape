@@ -15,12 +15,17 @@ public class Interactable : MonoBehaviour
     public Light lightToToggle;
     public AudioClip sound;
 
+    [Header("Switch settings (only for Type.Switch)")]
+    public int switchOrder = 1; // 1, 2, or 3 — order this switch must be flipped
+
     [Header("Dial settings")]
     public int correctDigit;
     public int currentDigit = 0;
     public TMPro.TMP_Text digitDisplay;
 
     private bool used = false;
+
+    public void ResetUsed() { used = false; }
 
     public void Interact()
     {
@@ -51,12 +56,15 @@ public class Interactable : MonoBehaviour
             case Type.Switch:
                 if (used) return;
                 if (!PuzzleManager.Instance.IsSolved("film_collected")) return;
-                used = true;
-                transform.Rotate(0, 0, 30);
-                if (objectToHide != null) objectToHide.SetActive(false);
-                if (objectToReveal != null) objectToReveal.SetActive(true);
-                Play();
-                PuzzleManager.Instance.FlipSwitch();
+                bool correct = PuzzleManager.Instance.TryFlipSwitch(switchOrder);
+                if (correct)
+                {
+                    used = true;
+                    transform.Rotate(0, 0, 30);
+                    if (objectToHide != null) objectToHide.SetActive(false);
+                    if (objectToReveal != null) objectToReveal.SetActive(true);
+                    Play();
+                }
                 break;
 
             case Type.WhiteChain:
@@ -92,7 +100,7 @@ public class Interactable : MonoBehaviour
 
     void CheckCombination()
     {
-        Interactable[] all = Object.FindObjectsByType<Interactable>();
+        Interactable[] all = Object.FindObjectsByType<Interactable>(FindObjectsSortMode.None);
         foreach (var i in all)
             if (i.type == Type.Dial && i.currentDigit != i.correctDigit) return;
         PuzzleManager.Instance.CompletePuzzle("combo_set");
