@@ -32,6 +32,8 @@ public class Interactable : MonoBehaviour
                 if (used) return;
                 used = true;
                 if (lightToToggle != null) lightToToggle.enabled = true;
+                if (objectToHide != null) objectToHide.SetActive(false);
+                if (objectToReveal != null) objectToReveal.SetActive(true);
                 Play();
                 PuzzleManager.Instance.CompletePuzzle("red_on");
                 break;
@@ -41,6 +43,7 @@ public class Interactable : MonoBehaviour
                 if (!PuzzleManager.Instance.IsSolved("red_on")) return;
                 used = true;
                 if (objectToReveal != null) objectToReveal.SetActive(true);
+                if (objectToHide != null) objectToHide.SetActive(false);
                 Play();
                 PuzzleManager.Instance.CompletePuzzle("film_collected");
                 break;
@@ -50,6 +53,8 @@ public class Interactable : MonoBehaviour
                 if (!PuzzleManager.Instance.IsSolved("film_collected")) return;
                 used = true;
                 transform.Rotate(0, 0, 30);
+                if (objectToHide != null) objectToHide.SetActive(false);
+                if (objectToReveal != null) objectToReveal.SetActive(true);
                 Play();
                 PuzzleManager.Instance.FlipSwitch();
                 break;
@@ -70,6 +75,8 @@ public class Interactable : MonoBehaviour
                 currentDigit = (currentDigit + 1) % 10;
                 if (digitDisplay != null) digitDisplay.text = currentDigit.ToString();
                 transform.Rotate(0, 36, 0);
+                if (objectToHide != null) objectToHide.SetActive(false);
+                if (objectToReveal != null) objectToReveal.SetActive(true);
                 Play();
                 CheckCombination();
                 break;
@@ -85,7 +92,7 @@ public class Interactable : MonoBehaviour
 
     void CheckCombination()
     {
-        Interactable[] all = Object.FindObjectsByType<Interactable>(FindObjectsSortMode.None);
+        Interactable[] all = Object.FindObjectsByType<Interactable>();
         foreach (var i in all)
             if (i.type == Type.Dial && i.currentDigit != i.correctDigit) return;
         PuzzleManager.Instance.CompletePuzzle("combo_set");
