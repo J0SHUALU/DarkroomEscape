@@ -35,6 +35,9 @@ All 5 puzzles solved → door unlocks → click to open → "YOU ESCAPED" screen
 - Mini First Person Controller by Simon Serge Pasi - Unity Asset Store EULA
 - Audio: Youtube
 
+## Demo
+[Watch the demo](https://youtu.be/76gDUE2mxQs)
+
 ## How to Run
 1. Clone this repo
 2. Open in Unity 6 (or Unity 2022.3 LTS)
