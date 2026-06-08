@@ -36,7 +36,7 @@ All 5 puzzles solved → door unlocks → click to open → "YOU ESCAPED" screen
 - Audio: Youtube
 
 ## Demo
-[Watch the demo](https://youtu.be/76gDUE2mxQs)
+[Watch the demo](https://youtu.be/HyCyRshTxDY)
 
 ## How to Run
 1. Clone this repo
